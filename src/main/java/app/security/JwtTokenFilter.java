@@ -26,8 +26,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = request.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
+        if (token != null && token.startsWith("Bearer")) {
+            token = token.split(" ")[1];
             if (tokenProvider.validateToken(token)) {
                 String username = tokenProvider.getUsernameFromJWT(token);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, null);

@@ -31,7 +31,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        if (userRepository.findByUsername(user.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body("Username is already taken!");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -60,15 +60,15 @@ public class AuthController {
 
     // Define JwtAuthenticationResponse class used in login response
     private static class JwtAuthenticationResponse {
-        private String accessToken;
+        private String jwt;
         private String tokenType = "Bearer";
 
         public JwtAuthenticationResponse(String accessToken) {
-            this.accessToken = accessToken;
+            this.jwt = accessToken;
         }
 
-        public String getAccessToken() {
-            return accessToken;
+        public String getJwt() {
+            return jwt;
         }
 
         public String getTokenType() {
