@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.entity.Sale;
+import app.forecast.SalesForecastingService;
 import app.repository.SalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ public class SalesController {
 
     @Autowired
     private SalesRepository salesRepository;
+
+    @Autowired
+    private SalesForecastingService salesForecastingService;
 
     @GetMapping("/header")
     public String getHeader() {
@@ -64,6 +68,16 @@ public class SalesController {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/forecast")
+    public ResponseEntity<Double> getForecast() {
+        try {
+            double forecast = salesForecastingService.forecastNextDaySales();
+            return ResponseEntity.ok(forecast);
+        } catch (Exception e) {
+            return ResponseEntity.ok(-1.0);
         }
     }
 }
