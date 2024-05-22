@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.entity.Sale;
+import app.forecast.ForecastResult;
 import app.forecast.SalesForecastingService;
 import app.repository.SalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,13 +72,14 @@ public class SalesController {
         }
     }
 
-    @GetMapping("/forecast")
-    public ResponseEntity<Double> getForecast() {
+    @PostMapping("/forecast")
+    public ResponseEntity<ForecastResult> getForecast(@RequestBody ForecastResult confidenceRequest) {
         try {
-            double forecast = salesForecastingService.forecastNextDaySales();
-            return ResponseEntity.ok(forecast);
+            double confidence = confidenceRequest.getConfidence();
+            ForecastResult forecastResult = salesForecastingService.forecastNextDaySales(confidence);
+            return ResponseEntity.ok(forecastResult);
         } catch (Exception e) {
-            return ResponseEntity.ok(-1.0);
+            return ResponseEntity.ok(new ForecastResult(-1, -1, -1, -1));
         }
     }
 }

@@ -16,7 +16,7 @@ public class Sale {
     private String title;
 
     @Column(nullable = true)
-    private Integer amount;
+    private double amount;
 
     @Column(columnDefinition = "TEXT")
     private String customer;
@@ -52,11 +52,11 @@ public class Sale {
         this.title = title;
     }
 
-    public Integer getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
